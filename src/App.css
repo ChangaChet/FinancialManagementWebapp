@@ -40,3 +40,36 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Add these styles to your src/App.css file */
+
+.interactive-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #d1d5db; /* gray-300 */
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+.interactive-slider:hover {
+    opacity: 1;
+}
+.interactive-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #4f46e5; /* indigo-600 */
+    border-radius: 50%;
+    cursor: pointer;
+}
+.interactive-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4f46e5; /* indigo-600 */
+    border-radius: 50%;
+    cursor: pointer;
+}
