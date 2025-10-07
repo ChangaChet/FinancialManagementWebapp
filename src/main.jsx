@@ -1,50 +1,55 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 // Import your global styles
-import './index.css'
+import './index.css';
 
 // Import the main layout component
-import App from './App.jsx'
+import App from './App.jsx';
 
-// Import your page components from the CORRECT folder ('./components/')
-import HomePage from './components/Homepage.jsx' // Make sure the filename matches!
-import AboutPage from './components/AboutPage.jsx'
-import ContactPage from './components/ContactPage.jsx'
-import DcfExplainerPage from './components/DcfExplainerPage.jsx'
+// Import all your page components
+// NOTE: Make sure these file paths match your project structure!
+import HomePage from './components/Homepage.jsx';
+import AboutPage from './components/AboutPage.jsx';
+import ContactPage from './components/ContactPage.jsx';
+import DiscountedCashFlow from './components/DiscountedCashFlow.jsx';
+import BondValuation from './components/BondValuation.jsx';
 
-
-// This is the correct, simple structure for your routes
+// This is the router configuration that maps URLs to components
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // <App> is the layout for ALL pages
+    element: <App />, // App.jsx is the layout for ALL pages
     children: [
       {
-        path: "/", // On the home URL, show the HomePage component
+        index: true, // This makes HomePage the default for "/"
         element: <HomePage />,
       },
       {
-        path: "about", // On the "/about" URL, show the AboutPage
+        path: "about",
         element: <AboutPage />,
       },
       {
-        path: "contact", // On the "/contact" URL, show the ContactPage
+        path: "contact",
         element: <ContactPage />,
       },
       {
-        path: "dcf-explainer", // On the "/dcf-explainer" URL, show the DcfExplainerPage
-        element: <DcfExplainerPage />,
+        path: "dcf-explainer", // When the URL is /dcf-explainer...
+        element: <DiscountedCashFlow />, // ...show this component.
+      },
+      {
+        path: "bond-valuation", // When the URL is /bond-valuation...
+        element: <BondValuation />, // ...show this component.
       }
     ],
   },
 ]);
 
-// This is the ONLY render call you need.
+// Start the React application
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>,
-)
+);
 
