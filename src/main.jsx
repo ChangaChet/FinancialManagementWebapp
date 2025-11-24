@@ -15,6 +15,9 @@ import AboutPage from './components/AboutPage.jsx';
 import ContactPage from './components/ContactPage.jsx';
 import DiscountedCashFlow from './components/DiscountedCashFlow.jsx';
 import BondValuation from './components/BondValuation.jsx';
+import StockValuation from './components/StockValuation.jsx';
+import CostOfCapital from './components/CostOfCapital.jsx';
+
 
 // This is the router configuration that maps URLs to components
 const router = createBrowserRouter([
@@ -41,6 +44,14 @@ const router = createBrowserRouter([
       {
         path: "bond-valuation", // When the URL is /bond-valuation...
         element: <BondValuation />, // ...show this component.
+      },
+      {
+        path: "stock-valuation",
+        element: <StockValuation />,
+      },
+      {
+        path: "cost-of-capital",
+        element: <CostOfCapital />,
       }
     ],
   },

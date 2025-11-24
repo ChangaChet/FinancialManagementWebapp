@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, BarChart, Bar } from 'recharts';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- Reusable Components ---
@@ -12,30 +12,50 @@ const CheckCircleIcon = () => (
 
 const InteractivePlayground = ({ title, children }) => (
     <div className="my-10 p-8 bg-gray-100 rounded-xl shadow-inner border border-gray-200">
-        <h3 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-3">{title}</h3>
+        <h3 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-3 flex items-center gap-2">
+            <span className="text-3xl">🎮</span> {title}
+        </h3>
         {children}
     </div>
 );
 
 const PracticeProblem = ({ title, problemNumber, children }) => (
-    <div className="my-8 p-6 border border-indigo-200 bg-indigo-50 rounded-lg">
-        <h4 className="text-xl font-bold text-indigo-800 mb-4">Quiz {problemNumber}: {title}</h4>
+    <div className="my-8 p-6 border border-indigo-200 bg-indigo-50 rounded-lg shadow-sm">
+        <h4 className="text-xl font-bold text-indigo-800 mb-4 flex items-center gap-2">
+            <span className="bg-indigo-200 text-indigo-800 py-1 px-3 rounded-full text-sm">Quiz {problemNumber}</span>
+            {title}
+        </h4>
         <div className="space-y-4">{children}</div>
+    </div>
+);
+
+const RealLifeSituation = ({ title, children }) => (
+    <div className="my-8 p-6 border-l-4 border-green-50 bg-green-50 rounded-r-lg shadow-sm">
+        <h4 className="text-xl font-bold text-green-800 mb-4 flex items-center gap-2">
+            <span>🌍</span> Real Life Situation: {title}
+        </h4>
+        <div className="prose max-w-none text-green-900">{children}</div>
+    </div>
+);
+
+const DidYouKnow = ({ children }) => (
+    <div className="my-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-3">
+        <span className="text-2xl">💡</span>
+        <div className="text-yellow-900 italic">{children}</div>
     </div>
 );
 
 const Section = ({ title, children }) => (
     <section className="mb-12">
-        <h3 className="text-3xl font-bold text-gray-800 mb-4 pb-2 border-b-2 border-indigo-500">{title}</h3>
-        <div className="prose max-w-none text-lg text-gray-700 space-y-4">{children}</div>
+        <h3 className="text-3xl font-bold text-gray-800 mb-6 pb-2 border-b-2 border-indigo-500">{title}</h3>
+        <div className="prose max-w-none text-lg text-gray-700 space-y-6 leading-relaxed">{children}</div>
     </section>
 );
 
-const KeyTerm = ({ children }) => <strong className="font-bold text-indigo-600">{children}</strong>;
-const SubHeading = ({ children }) => <h5 className="text-xl font-semibold text-gray-700 mt-4">{children}</h5>;
-const BulletedList = ({ items }) => <ul className="list-disc pl-8 space-y-2">{items.map((item, i) => <li key={i}>{item}</li>)}</ul>;
-const InfoBlock = ({ children }) => <div className="p-4 my-4 bg-blue-100 border-l-4 border-blue-500 text-blue-800 rounded-r-lg">{children}</div>;
-const Formula = ({ children }) => <div className="my-4 p-4 bg-gray-800 text-white font-mono text-center text-xl rounded-md overflow-x-auto">{children}</div>;
+const KeyTerm = ({ children }) => <span className="font-bold text-indigo-600 bg-indigo-50 px-1 rounded border border-indigo-100">{children}</span>;
+const SubHeading = ({ children }) => <h5 className="text-xl font-semibold text-gray-800 mt-6 mb-3">{children}</h5>;
+const BulletedList = ({ items }) => <ul className="list-disc pl-6 space-y-2 marker:text-indigo-500">{items.map((item, i) => <li key={i}>{item}</li>)}</ul>;
+const Formula = ({ children }) => <div className="my-6 p-6 bg-gray-900 text-white font-mono text-center text-xl rounded-xl shadow-lg overflow-x-auto border border-gray-700">{children}</div>;
 
 const Katex = ({ latex }) => {
     const ref = useRef();
@@ -62,9 +82,17 @@ const content = {
                             "Inflation: Over time, the prices of goods and services tend to rise. The $100 you receive a year from now will likely buy less than $100 today. Your 'purchasing power' decreases.",
                             "Certainty: Having the money now is a sure thing. The future always carries some uncertainty."
                         ]} />
-                        <InfoBlock>
-                            <p>Discounted Cash Flow (DCF) valuation is simply the process of figuring out exactly what that future money is worth in today's terms. It's like using a financial time machine.</p>
-                        </InfoBlock>
+                        <RealLifeSituation title="The Lottery Dilemma">
+                            <p>Imagine you win a $10 million lottery jackpot! 🎉 You are presented with two options:</p>
+                            <ul className="list-decimal pl-6 mt-2 mb-4">
+                                <li><strong>Lump Sum:</strong> Receive $6 million cash immediately.</li>
+                                <li><strong>Annuity:</strong> Receive the full $10 million, but paid out as $333,333 every year for 30 years.</li>
+                            </ul>
+                            <p>Many people instinctively want the "full" $10 million. However, TVM teaches us that the $333,333 you get in year 30 is worth <em>far less</em> than $333,333 today due to inflation and lost investment opportunity. Financial experts often advise taking the lump sum because if you invest that $6 million wisely (even at a modest 5-6% return), it could grow to significantly more than $10 million over 30 years!</p>
+                        </RealLifeSituation>
+                        <DidYouKnow>
+                            The concept of interest dates back to ancient Babylon (c. 2000 BC)! Grain was loaned out, and the borrower had to return the grain plus a portion of the new harvest as interest.
+                        </DidYouKnow>
                     </>
                 )
             }
@@ -249,6 +277,24 @@ const content = {
               )
           }
       ]
+    },
+    module8: {
+        title: "Module 8: NPV & IRR (Capital Budgeting)",
+        sections: [
+            {
+                title: "8.1 Making Investment Decisions",
+                content: (
+                    <>
+                        <p>How do businesses decide whether to build a new factory or launch a new product? They use <KeyTerm>Net Present Value (NPV)</KeyTerm> and <KeyTerm>Internal Rate of Return (IRR)</KeyTerm>.</p>
+                        <BulletedList items={[
+                            "NPV: The difference between the present value of cash inflows and the present value of cash outflows. If NPV > 0, the project adds value and should be accepted.",
+                            "IRR: The discount rate that makes the NPV equal to zero. It represents the expected annual return of the project. If IRR > Required Return, the project is good."
+                        ]} />
+                        <Formula><Katex latex={"NPV = \\sum_{t=0}^{n} \\frac{CF_t}{(1+r)^t}"} /></Formula>
+                    </>
+                )
+            }
+        ]
     }
 };
 
@@ -268,11 +314,18 @@ const FutureValueModule = ({ content, onComplete }) => {
     const [pv, setPv] = useState(1000);
     const [rate, setRate] = useState(10);
     const [time, setTime] = useState(20);
+    const [compounding, setCompounding] = useState(1); // 1 = Annual, 12 = Monthly
     
-    const fvData = useMemo(() => Array.from({ length: time + 1 }, (_, i) => ({
-        year: i,
-        value: pv * Math.pow(1 + rate / 100, i),
-    })), [pv, rate, time]);
+    const fvData = useMemo(() => Array.from({ length: time + 1 }, (_, i) => {
+        const years = i;
+        const annualFV = pv * Math.pow(1 + rate / 100, years);
+        const monthlyFV = pv * Math.pow(1 + (rate / 100) / 12, years * 12);
+        return {
+            year: years,
+            Annual: annualFV,
+            Monthly: monthlyFV
+        };
+    }), [pv, rate, time]);
 
     return (
         <motion.div>
@@ -280,31 +333,54 @@ const FutureValueModule = ({ content, onComplete }) => {
             {content.sections.map((section, index) => (
                 <Section key={index} title={section.title}>{section.content}</Section>
             ))}
-            <InteractivePlayground title="Future Value Interactive Graph">
+            <InteractivePlayground title="Future Value & Compounding Power">
                 <div className="grid md:grid-cols-3 gap-8 items-center">
-                    <div className="md:col-span-1 space-y-4">
+                    <div className="md:col-span-1 space-y-6">
                         <div>
-                            <label>Present Value (PV): <span className="font-bold text-blue-600">${pv.toLocaleString()}</span></label>
-                            <input type="range" min="100" max="10000" step="100" value={pv} onChange={e => setPv(Number(e.target.value))} className="interactive-slider" />
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Present Value (PV)</label>
+                            <div className="flex items-center gap-2">
+                                <span className="text-lg font-bold text-blue-600 w-20">${pv.toLocaleString()}</span>
+                                <input type="range" min="100" max="10000" step="100" value={pv} onChange={e => setPv(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                            </div>
                         </div>
                         <div>
-                            <label>Interest Rate (r): <span className="font-bold text-blue-600">{rate}%</span></label>
-                            <input type="range" min="1" max="25" value={rate} onChange={e => setRate(Number(e.target.value))} className="interactive-slider" />
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Interest Rate (r)</label>
+                            <div className="flex items-center gap-2">
+                                <span className="text-lg font-bold text-blue-600 w-20">{rate}%</span>
+                                <input type="range" min="1" max="25" value={rate} onChange={e => setRate(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                            </div>
                         </div>
                         <div>
-                            <label>Time Periods (t): <span className="font-bold text-blue-600">{time} years</span></label>
-                            <input type="range" min="1" max="50" value={time} onChange={e => setTime(Number(e.target.value))} className="interactive-slider" />
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Time Periods (t)</label>
+                            <div className="flex items-center gap-2">
+                                <span className="text-lg font-bold text-blue-600 w-20">{time} yrs</span>
+                                <input type="range" min="1" max="50" value={time} onChange={e => setTime(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                            </div>
+                        </div>
+                        <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                            <h5 className="font-bold text-blue-800 mb-2">Impact of Frequency</h5>
+                            <p className="text-sm text-blue-700 mb-2">Compare Annual vs. Monthly compounding:</p>
+                            <div className="flex justify-between text-sm">
+                                <span>Annual FV:</span>
+                                <span className="font-bold">${fvData[time].Annual.toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                                <span>Monthly FV:</span>
+                                <span className="font-bold text-green-600">${fvData[time].Monthly.toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
+                            </div>
+                            <div className="mt-2 text-xs text-gray-500 text-right">Difference: +${(fvData[time].Monthly - fvData[time].Annual).toLocaleString(undefined, {maximumFractionDigits: 0})}</div>
                         </div>
                     </div>
-                    <div className="md:col-span-2 h-80">
+                    <div className="md:col-span-2 h-96 bg-white p-4 rounded-lg border border-gray-100">
                         <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={fvData}>
-                                <CartesianGrid strokeDasharray="3 3" />
+                            <LineChart data={fvData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                                 <XAxis dataKey="year" label={{ value: 'Years', position: 'insideBottom', offset: -10 }} />
                                 <YAxis tickFormatter={(v) => `$${Math.round(v/1000)}k`} label={{ value: 'Value', angle: -90, position: 'insideLeft' }}/>
-                                <Tooltip formatter={(v) => `$${v.toLocaleString(undefined, {maximumFractionDigits: 2})}`} />
-                                <Legend verticalAlign="top" />
-                                <Line type="monotone" dataKey="value" name="Future Value Growth" stroke="#3b82f6" strokeWidth={2} dot={false} />
+                                <Tooltip formatter={(v) => `$${v.toLocaleString(undefined, {maximumFractionDigits: 2})}`} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
+                                <Legend verticalAlign="top" height={36}/>
+                                <Line type="monotone" dataKey="Annual" name="Annual Compounding" stroke="#3b82f6" strokeWidth={3} dot={false} />
+                                <Line type="monotone" dataKey="Monthly" name="Monthly Compounding" stroke="#10b981" strokeWidth={3} dot={false} strokeDasharray="5 5" />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
@@ -337,15 +413,15 @@ const PresentValueModule = ({ content, onComplete }) => {
                     <div className="md:col-span-1 space-y-4">
                         <div>
                             <label>Future Value (FV): <span className="font-bold text-blue-600">${fv.toLocaleString()}</span></label>
-                            <input type="range" min="1000" max="50000" step="1000" value={fv} onChange={e => setFv(Number(e.target.value))} className="interactive-slider" />
+                            <input type="range" min="1000" max="50000" step="1000" value={fv} onChange={e => setFv(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                         </div>
                         <div>
                             <label>Discount Rate (r): <span className="font-bold text-blue-600">{rate}%</span></label>
-                            <input type="range" min="1" max="25" value={rate} onChange={e => setRate(Number(e.target.value))} className="interactive-slider" />
+                            <input type="range" min="1" max="25" value={rate} onChange={e => setRate(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                         </div>
                         <div>
                             <label>Time Periods (t): <span className="font-bold text-blue-600">{time} years</span></label>
-                            <input type="range" min="1" max="50" value={time} onChange={e => setTime(Number(e.target.value))} className="interactive-slider" />
+                            <input type="range" min="1" max="50" value={time} onChange={e => setTime(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                         </div>
                     </div>
                     <div className="md:col-span-2 h-80">
@@ -444,15 +520,15 @@ const AnnuitiesModule = ({ content, onComplete }) => {
                     <div className="md:col-span-1 space-y-4">
                         <div>
                             <label>Payment (C): <span className="font-bold text-blue-600">${c.toLocaleString()}</span></label>
-                            <input type="range" min="50" max="1000" step="50" value={c} onChange={e => setC(Number(e.target.value))} className="interactive-slider" />
+                            <input type="range" min="50" max="1000" step="50" value={c} onChange={e => setC(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                         </div>
                         <div>
                             <label>Interest Rate (r): <span className="font-bold text-blue-600">{rate}%</span></label>
-                            <input type="range" min="1" max="20" value={rate} onChange={e => setRate(Number(e.target.value))} className="interactive-slider" />
+                            <input type="range" min="1" max="20" value={rate} onChange={e => setRate(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                         </div>
                         <div>
                             <label>Time Periods (t): <span className="font-bold text-blue-600">{time} years</span></label>
-                            <input type="range" min="2" max="15" value={time} onChange={e => setTime(Number(e.target.value))} className="interactive-slider" />
+                            <input type="range" min="2" max="15" value={time} onChange={e => setTime(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                         </div>
                          <div className="flex justify-center pt-4">
                             <button onClick={() => setMode('PV')} className={`px-4 py-2 rounded-l-lg ${mode === 'PV' ? 'bg-indigo-600 text-white' : 'bg-gray-300'}`}>Calculate PV</button>
@@ -523,7 +599,7 @@ const APRvsEARModule = ({ content, onComplete }) => {
                     <div className="space-y-4">
                         <div>
                             <label>Quoted APR (%): <span className="font-bold text-blue-600">{apr}%</span></label>
-                            <input type="range" min="1" max="50" value={apr} onChange={e => setApr(Number(e.target.value))} className="interactive-slider" />
+                            <input type="range" min="1" max="50" value={apr} onChange={e => setApr(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
                         </div>
                         <div>
                            <label>Compounding Frequency (m): <span className="font-bold text-blue-600">{m}</span></label>
@@ -545,6 +621,80 @@ const APRvsEARModule = ({ content, onComplete }) => {
         </motion.div>
     );
 }
+
+const NPVIRRModule = ({ content, onComplete }) => {
+    const [initialInvestment, setInitialInvestment] = useState(10000);
+    const [cashFlows, setCashFlows] = useState([3000, 3000, 3000, 3000, 3000]);
+    const [discountRate, setDiscountRate] = useState(10);
+
+    const updateCashFlow = (index, value) => {
+        const newFlows = [...cashFlows];
+        newFlows[index] = Number(value);
+        setCashFlows(newFlows);
+    };
+
+    const npv = useMemo(() => {
+        let val = -initialInvestment;
+        cashFlows.forEach((cf, i) => {
+            val += cf / Math.pow(1 + discountRate / 100, i + 1);
+        });
+        return val;
+    }, [initialInvestment, cashFlows, discountRate]);
+
+    return (
+        <motion.div>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-4">{content.title}</h2>
+            {content.sections.map((s, i) => <Section key={i} title={s.title}>{s.content}</Section>)}
+            <InteractivePlayground title="Capital Budgeting Simulator">
+                <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-4">
+                        <SubHeading>Project Inputs</SubHeading>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Initial Investment (Year 0)</label>
+                            <input type="number" value={initialInvestment} onChange={e => setInitialInvestment(Number(e.target.value))} className="w-full p-2 border rounded text-red-600 font-bold" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Discount Rate (%)</label>
+                            <input type="number" value={discountRate} onChange={e => setDiscountRate(Number(e.target.value))} className="w-full p-2 border rounded" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">Future Cash Flows</label>
+                            {cashFlows.map((cf, i) => (
+                                <div key={i} className="flex items-center gap-2">
+                                    <span className="w-16 text-sm text-gray-500">Year {i + 1}</span>
+                                    <input type="number" value={cf} onChange={e => updateCashFlow(i, e.target.value)} className="flex-1 p-2 border rounded" />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex flex-col justify-center items-center space-y-6">
+                        <div className={`p-6 rounded-xl shadow-lg w-full text-center ${npv >= 0 ? 'bg-green-100 border-2 border-green-400' : 'bg-red-100 border-2 border-red-400'}`}>
+                            <h3 className="text-xl font-bold text-gray-800">Net Present Value (NPV)</h3>
+                            <p className={`text-4xl font-extrabold mt-2 ${npv >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                                ${npv.toLocaleString(undefined, {maximumFractionDigits: 2})}
+                            </p>
+                            <p className="mt-2 font-semibold">
+                                {npv >= 0 ? "✅ ACCEPT PROJECT" : "❌ REJECT PROJECT"}
+                            </p>
+                        </div>
+                        <div className="w-full h-64">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={[{ name: 'Year 0', value: -initialInvestment }, ...cashFlows.map((cf, i) => ({ name: `Year ${i+1}`, value: cf }))]}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis />
+                                    <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+                                    <Bar dataKey="value" fill="#4f46e5" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+                </div>
+            </InteractivePlayground>
+            <button onClick={onComplete} className="w-full mt-8 py-3 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 text-xl transition-colors">Mark as Complete</button>
+        </motion.div>
+    );
+};
 
 // --- Main Application Component ---
 export default function DcfApp() {
@@ -585,6 +735,7 @@ export default function DcfApp() {
         { id: 5, name: 'Annuities', Component: AnnuitiesModule, content: content.module5 },
         { id: 6, name: 'Perpetuities', Component: PerpetuitiesModule, content: content.module6 },
         { id: 7, name: 'APR vs. EAR', Component: APRvsEARModule, content: content.module7 },
+        { id: 8, name: 'NPV & IRR', Component: NPVIRRModule, content: content.module8 },
     ];
 
     const NavItem = ({ module }) => {
@@ -607,20 +758,14 @@ export default function DcfApp() {
 
     return (
         <div className="min-h-screen bg-gray-50 font-sans flex flex-col md:flex-row">
-            <aside className="w-full md:w-80 bg-white p-6 border-r border-gray-200 flex-shrink-0 shadow-md z-10">
+            <aside className="w-full md:w-80 bg-white p-6 border-r border-gray-200 flex-shrink-0 shadow-md z-10 overflow-y-auto h-screen sticky top-0">
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">DCF Fundamentals</h1>
-                <p className="text-sm text-gray-500 mb-6">A Beginner's Guide</p>
+                <p className="text-sm text-gray-500 mb-6">Master the Time Value of Money</p>
                 <nav className="space-y-2">
                     {moduleData.map(m => <NavItem key={m.id} module={m} />)}
                 </nav>
             </aside>
             <main className="flex-1 p-6 md:p-10 overflow-y-auto">
-                 <style>{`
-                    .interactive-slider { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 5px; background: #d1d5db; outline: none; opacity: 0.7; transition: opacity .2s; }
-                    .interactive-slider:hover { opacity: 1; }
-                    .interactive-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #4f46e5; cursor: pointer; }
-                    .interactive-slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #4f46e5; cursor: pointer; }
-                `}</style>
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeModule}
@@ -636,4 +781,3 @@ export default function DcfApp() {
         </div>
     );
 }
-
